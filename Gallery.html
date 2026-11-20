@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sparkling Flying Bird</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      overflow: hidden;
+      background: linear-gradient(to bottom, #090d16, #1b2845, pink 10%);
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* Container that moves the bird across the screen */
+    .bird-wrapper {
+      position: absolute;
+      top: 30%;
+      left: -100px;
+      animation: flyAcross 9s linear infinite;
+    }
+
+    /* SVG Bird styling and glow */
+    .bird {
+      width: 70px;
+      height: 70px;
+      fill: #fff7d6;
+      filter: drop-shadow(0 0 12px #ffd700);
+      animation: bobbing 1.5s ease-in-out infinite alternate;
+    }
+
+    /* Wing flapping motion */
+    .wing {
+      transform-origin: 35px 38px;
+      animation: flap 0.35s ease-in-out infinite alternate;
+    }
+
+    /* Sparkle particles */
+    .sparkle {
+      position: absolute;
+      background: radial-gradient(circle, #ffffff 10%, #ffd700 60%, transparent 100%);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: twinkle 1.2s ease-out forwards;
+    }
+
+    /* Keyframes for flight path across the screen */
+    @keyframes flyAcross {
+      0% {
+        left: -10%;
+        top: 45%;
+      }
+      50% {
+        top: 25%;
+      }
+      100% {
+        left: 110%;
+        top: 40%;
+      }
+    }
+
+    /* Keyframes for gentle up-and-down bobbing */
+    @keyframes bobbing {
+      from { transform: translateY(-8px) rotate(-4deg); }
+      to   { transform: translateY(8px) rotate(4deg); }
+    }
+
+    /* Keyframes for wing flapping */
+    @keyframes flap {
+      from { transform: scaleY(1); }
+      to   { transform: scaleY(-0.6); }
+    }
+
+    /* Keyframes for fading sparkles */
+    @keyframes twinkle {
+      0% {
+        transform: scale(1) translate(0, 0);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(0) translate(-20px, 25px);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<center><p><p style="color: white;font-size: 50px;">MY GALLERY</p></p></center>
+<p><center>
+ <a href="My%20profile.html">Home</a> |
+ <a href="About_me.html">About Me</a> |
+ <a href="Hobbies.html">My Hobbies</a> |
+ <a href="Gallery.html">Gallery</a> |
+ <a href="Contact.html">Contact</a>
+ </center></p>
+<br><center><img src="beach.jpg" image" width="800" height="300">
+<img src="family.jpg" image" width="800" height="300" ></center></br>
+          <center><p><p style="color: black;font-size: 20px;"><a href = My%20profile.html>&laquo;Back to Home</a></p></p></center>
+        
+
+  <div class="bird-wrapper" id="birdWrapper">
+     <img src="beach.jpg" alt="Sparkling Moving Image">
+    <svg class="bird" viewBox="0 0 64 64">
+      <!-- Bird Body -->
+      <path d="M56,28 C52,26 46,27 42,30 C35,24 22,25 14,32 C10,35 4,34 2,33 C5,39 12,41 18,40 C26,44 38,42 46,35 C50,33 56,33 62,30 C59,29 58,28 56,28 Z" />
+      <!-- Flapping Wing -->
+      <path class="wing" d="M36,33 C30,18 18,14 10,18 C16,24 22,30 26,35 Z" />
+    </svg>
+  </div>
+
+  <script>
+    const birdWrapper = document.getElementById('birdWrapper');
+
+    function createSparkle() {
+      const rect = birdWrapper.getBoundingClientRect();
+
+      // Only spawn sparkles while the bird is visible on screen
+      if (rect.left > -50 && rect.left < window.innerWidth) {
+        const sparkle = document.createElement('div');
+        sparkle.classList.add('sparkle');
+
+        // Randomize sparkle size
+        const size = Math.random() * 8 + 4;
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
+
+        // Position near the bird's tail/wings with slight randomness
+        const offsetX = (Math.random() - 0.5) * 30;
+        const offsetY = (Math.random() - 0.5) * 30;
+        sparkle.style.left = `${rect.left + 20 + offsetX}px`;
+        sparkle.style.top = `${rect.top + 35 + offsetY}px`;
+
+        document.body.appendChild(sparkle);
+
+        // Remove element after animation finishes to keep memory clean
+        setTimeout(() => {
+          sparkle.remove();
+        }, 1200);
+      }
+    }
+
+    // Generate a new sparkle every 50 milliseconds
+    setInterval(createSparkle, 50);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sparkling Flying Butterfly</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #1b1438 0%, yellow 10% );
+      position: relative;
+    }
+
+    /* Butterfly Container */
+    .butterfly {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      transform-style: preserve-3d;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* Butterfly Body */
+    .body {
+      position: absolute;
+      width: 6px;
+      height: 36px;
+      background: #ffd166;
+      border-radius: 10px;
+      top: 12px;
+      left: 27px;
+      box-shadow: 0 0 10px #ffd166;
+    }
+
+    /* Antennae */
+    .body::before,
+    .body::after {
+      content: '';
+      position: absolute;
+      width: 750px;
+      height: 14px;
+      background: pink;
+      top: -11px;
+      border-radius: 2px;
+    }
+    .body::before {
+      left: 0;
+      transform: rotate(-25deg);
+    }
+    .body::after {
+      right: 0;
+      transform: rotate(25deg);
+    }
+
+    /* Wings */
+    .wing {
+      position: absolute;
+      width: 28px;
+      height: 46px;
+      top: 6px;
+      background: linear-gradient(135deg, #ff4d94 0%, #7b2cbf 60%, #4cc9f0 100%);
+      box-shadow: 0 0 15px rgba(255, 77, 148, 0.8), inset 0 0 8px #ffffff;
+      opacity: 0.9;
+    }
+
+    .wing.left {
+      left: 1px;
+      border-radius: 80% 20% 20% 80% / 60% 30% 30% 60%;
+      transform-origin: right center;
+      animation: flapLeft 0.25s infinite alternate ease-in-out;
+    }
+
+    .wing.right {
+      right: 1px;
+      border-radius: 20% 80% 80% 20% / 30% 60% 60% 30%;
+      transform-origin: left center;
+      animation: flapRight 0.25s infinite alternate ease-in-out;
+    }
+
+    /* Flapping Animations */
+    @keyframes flapLeft {
+      0% { transform: rotateY(15deg) rotateZ(-5deg); }
+      100% { transform: rotateY(75deg) rotateZ(-5deg); }
+    }
+
+    @keyframes flapRight {
+      0% { transform: rotateY(-15deg) rotateZ(5deg); }
+      100% { transform: rotateY(-75deg) rotateZ(5deg); }
+    }
+
+    /* Sparkle Particles */
+    .sparkle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: twinkle 1.2s forwards ease-out;
+    }
+
+    @keyframes twinkle {
+      0% {
+        transform: scale(0.3) translate(0, 0);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.2) translate(var(--dx), var(--dy));
+        opacity: 0.9;
+      }
+      100% {
+        transform: scale(0) translate(calc(var(--dx) * 2), calc(var(--dy) * 2));
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body><p><center><p style="color: blue;font-size: 50px;"><br>IN CASE OF EMERGENCY</br></p></center></p>
+<p><center>
+ <a href="My%20profile.html">Home</a> |
+ <a href="About_me.html">About Me</a> |
+ <a href="Hobbies.html">My Hobbies</a> |
+ <a href="Gallery.html">Gallery</a> |
+ <a href="Contact.html">Contact</a>
+ </center></p>
+<br><center><img src = "hotline.jpg"></center></br>
+ <center><p><p style="color: white;font-size: 20px;"><a href = My%20profile.html>&laquo;Back to Home</a></p></p></center>
+  <div class="butterfly" id="butterfly">
+    <div class="wing left"></div>
+    <div class="wing right"></div>
+    <div class="body"></div>
+  </div>
+  <script>
+    const butterfly = document.getElementById('butterfly');
+    const colors = ['#ffffff', '#ffd166', '#4cc9f0', '#ff70a6', '#c77dff'];
+
+    let posX = window.innerWidth / 2;
+    let posY = window.innerHeight / 2;
+    let targetX = posX;
+    let targetY = posY;
+    let frameCount = 0;
+
+    // Pick a new random destination periodically
+    function setNewTarget() {
+      const padding = 80;
+      targetX = padding + Math.random() * (window.innerWidth - padding * 2);
+      targetY = padding + Math.random() * (window.innerHeight - padding * 2);
+    }
+
+    setInterval(setNewTarget, 2200);
+    setNewTarget();
+
+    // Create a glowing sparkle particle
+    function createSparkle(x, y) {
+      const sparkle = document.createElement('div');
+      sparkle.classList.add('sparkle');
+
+      const size = Math.random() * 6 + 3;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const dx = (Math.random() - 0.5) * 40 + 'px';
+      const dy = (Math.random() - 0.5) * 40 + 'px';
+
+      sparkle.style.width = `${size}px`;
+      sparkle.style.height = `${size}px`;
+      sparkle.style.background = color;
+      sparkle.style.boxShadow = `0 0 ${size * 2}px ${color}`;
+      sparkle.style.left = `${x}px`;
+      sparkle.style.top = `${y}px`;
+      sparkle.style.setProperty('--dx', dx);
+      sparkle.style.setProperty('--dy', dy);
+
+      document.body.appendChild(sparkle);
+
+      setTimeout(() => {
+        sparkle.remove();
+      }, 1200);
+    }
+
+    // Main animation loop
+    function animate() {
+      // Smoothly move toward target
+      const vx = (targetX - posX) * 0.025;
+      const vy = (targetY - posY) * 0.025;
+
+      posX += vx;
+      posY += vy;
+
+      // Calculate facing angle based on movement direction
+      const angle = Math.atan2(vy, vx) * (180 / Math.PI) + 90;
+
+      butterfly.style.left = `${posX - 30}px`;
+      butterfly.style.top = `${posY - 30}px`;
+      butterfly.style.transform = `rotate(${angle}deg)`;
+
+      // Emit sparkles every 2 frames
+      frameCount++;
+      if (frameCount % 2 === 0) {
+        createSparkle(posX + (Math.random() - 0.5) * 20, posY + (Math.random() - 0.5) * 20);
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    // Optional: Make the butterfly follow your mouse or tap
+    window.addEventListener('mousemove', (e) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+    });
+
+    animate();
+  </script>
+</body>
+</html>

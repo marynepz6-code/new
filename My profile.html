@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .sparkle-container {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+  }
+
+  .sparkle-container img {
+    display: block;
+    width: 1258px; /* Adjust to your image size */
+    height: 200;
+
+  }
+
+  /* Creates individual sparkle stars */
+  .sparkle {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: yellow;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    box-shadow: 0 0 10px 12px yellow;
+    opacity: 0;
+    animation: twinkle 1s infinite ease-in-out;
+    pointer-events: none;
+  }
+
+  /* Position and stagger the timing of each star */
+  .s1 { top: 20%; left: 30%; animation-delay: 0s; }
+  .s2 { top: 60%; left: 70%; animation-delay: 0.7s; }
+  .s3 { top: 35%; left: 80%; animation-delay: 1.3s; }
+  .s4 { top: 75%; left: 25%; animation-delay: 1.8s; }
+
+  @keyframes twinkle {
+    0%, 100% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+  }
+ 
+</style>
+</head>
+<body>
+<div class="sparkle-container">
+<center><p style="color: blue;font-size: 50px;">WELCOME TO MY HOME</a></p></center>
+ <center><a href="My%20profile.html">Home</a> |
+ <a href="About_me.html">About Me</a> |
+ <a href="Hobbies.html">My Hobbies</a> |
+ <a href="Gallery.html">Gallery</a> |
+ <a href="Contact.html">Contact</a></center>
+  <br><img src = "butterfly.jpg"image" width="1500" height="650" alt="Sparkling picture"></br>
+  <div class="sparkle s1"></div>
+  <div class="sparkle s2"></div>
+  <div class="sparkle s3"></div>
+  <div class="sparkle s4"></div>
+</div>
+</body>
+</html>
